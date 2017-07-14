@@ -346,6 +346,28 @@ class PlotBlock(StudioEditableXBlockMixin, StudioContainerWithNestedXBlocksMixin
         fragment.initialize_js('PlotBlock')
         return fragment
 
+    def student_view_data(self, _=None):
+        """
+        Returns a JSON representation of the student_view of this XBlock,
+        retrievable from the Course XBlock API.
+        """
+        return {
+            'self': {
+                'q1_label': self.q1_label,
+                'q2_label': self.q2_label,
+                'q3_label': self.q3_label,
+                'q4_label': self.q4_label,
+                'default_claims_json': self.default_claims_json(),
+                'point_color_default': self.point_color_default,
+                'plot_label': self.plot_label,
+                'average_claims_json': self.average_claims_json(),
+                'point_color_average': self.point_color_average,
+                'overlay_data': self.overlay_data,
+            },
+            'type': self.CATEGORY,
+            'hide_header': True,
+        }
+
     def author_edit_view(self, context):
         """
         Add some HTML to the author view that allows authors to add child blocks.

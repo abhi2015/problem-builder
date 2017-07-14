@@ -109,6 +109,12 @@ class ConditionalMessageBlock(
 
         return True
 
+    def student_view_data(self, context=None):
+        return {
+            'type': self.CATEGORY,
+            'content': self.content,
+        }
+
     def student_view(self, _context=None):
         """ Render this message. """
         html = u'<div class="review-conditional-message">{content}</div>'.format(
@@ -150,6 +156,14 @@ class ScoreSummaryBlock(XBlockWithTranslationServiceMixin, XBlockWithPreviewMixi
         context = context or {}
         html = loader.render_template("templates/html/sb-review-score.html", context.get("score_summary", {}))
         return Fragment(html)
+
+    def student_view_data(self, context=None):
+        context = context or {}
+
+        return {
+            'type': self.CATEGORY,
+            'score_summary': context.get('score_summary', {}),
+        }
 
     embedded_student_view = student_view
 
@@ -198,6 +212,15 @@ class PerQuestionFeedbackBlock(XBlockWithTranslationServiceMixin, XBlockWithPrev
         else:
             html = u""
         return Fragment(html)
+
+    def student_view_data(self, context=None):
+        context = context or {}
+        review_tips = context.get('score_summary', {}).get('review_tips')
+
+        return {
+            'type': self.CATEGORY,
+            'tips': review_tips
+        }
 
     embedded_student_view = student_view
 
@@ -278,6 +301,23 @@ class ReviewStepBlock(
                     fragment.add_content(child_fragment.content)
 
         return fragment
+
+    def student_view_data(self, context=None):
+        context = context.copy() if context else {}
+        children_contents = []
+
+        for child_id in self.children:
+            child = self.runtime.get_block(child_id)
+            if child and hasattr(child, 'is_applicable'):
+                if 'score_summary' not in context or not child.is_applicable(context):
+                    continue
+                children_contents.append(child.student_view_data(context))
+
+        return {
+            'type': self.CATEGORY,
+            'score_summary': context.get('score_summary', {}),
+            'children_contents': children_contents,
+        }
 
     mentoring_view = student_view
 

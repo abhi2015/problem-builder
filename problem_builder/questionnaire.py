@@ -236,7 +236,7 @@ class QuestionnaireAbstractBlock(
             return format_html(self.message)
         return ""
 
-    def student_view_data(self):
+    def student_view_data(self, context=None):
         """
         Returns a JSON representation of the student_view of this XBlock,
         retrievable from the Course Block API.

@@ -121,6 +121,21 @@ class SliderBlock(
     student_view = mentoring_view
     preview_view = mentoring_view
 
+    def student_view_data(self, _=None):
+        return {
+            'type': self.CATEGORY,
+            'question': self.question,
+            'slider_id': 'pb-slider-{}'.format(uuid.uuid4().hex[:20]),
+            'initial_value': int(self.student_value*100) if self.student_value is not None else 50,
+            'min_label': self.min_label,
+            'max_label': self.max_label,
+            'title': self.display_name_with_default,
+            'hide_header': not self.show_title,
+            'instructions_string': self._("Select a value from {min_label} to {max_label}").format(
+                min_label=self.min_label, max_label=self.max_label
+            ),
+        }
+
     def author_view(self, context):
         """
         Add some HTML to the author view that allows authors to see the ID of the block, so they
