@@ -256,6 +256,7 @@ class RatingBlock(MCQBlock):
         except AttributeError:
             return self.name
 
+    @XBlock.supports("multi_device")  # Mark as mobile-friendly
     def student_view(self, context):
         fragment = super(RatingBlock, self).student_view(context)
         rendering_for_studio = None

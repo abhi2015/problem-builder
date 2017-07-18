@@ -70,6 +70,7 @@ class ChoiceBlock(StudioEditableXBlockMixin, XBlockWithPreviewMixin, XBlockWithT
         """ Render this choice string within a mentoring block question. """
         return Fragment(u'<span class="choice-text">{}</span>'.format(self.content))
 
+    @XBlock.supports("multi_device")  # Mark as mobile-friendly
     def student_view(self, context=None):
         """ Normal view of this XBlock, identical to mentoring_view """
         return self.mentoring_view(context)
