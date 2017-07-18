@@ -22,6 +22,7 @@
 
 import logging
 
+from xblock.core import XBlock
 from xblock.fields import Scope, String, List
 from xblock.fragment import Fragment
 from xblock.validation import ValidationMessage
